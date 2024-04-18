@@ -1,24 +1,35 @@
 import reflex as rx
 from .model.user_model import User
-from .service.user_service import select_all
+from .service.user_service import select_all_user_service, select_user_by_email_service
 
 class UserState(rx.State):
     
     users: list[User]
+    user_buscar: str
     
     @rx.background
     async def get_all_user(self):
         async with self:
-            self.users = select_all()
+            self.users = select_all_user_service()
+        
+    @rx.background
+    async def get_user_by_email(self):
+        async with self:
+            self.users = select_user_by_email_service(self.user_buscar) 
+            
+    def buscar_on_change(self, value: str):
+        self.user_buscar = value
     
 
 @rx.page(route='/user', title='user', on_load=UserState.get_all_user)
 def user_page() -> rx.Component:
     return rx.flex(
         rx.heading('Usuarios', align="center"),
-        # rx.hstack(
-            
-        # )
+        rx.hstack(
+            buscar_user_component(),
+            justify="center",
+            style={'margin_top': '30px'}
+        ),
         table_user(UserState.users),
         direction="column",
         style={"width": "60vw", "margin": "auto"}
@@ -49,4 +60,11 @@ def row_table(user: User) -> rx.Component:
         rx.table.cell(rx.hstack(
             rx.button('Eliminar')  
         ))
+    )
+    
+    
+def buscar_user_component() -> rx.Component:
+    return rx.hstack(
+        rx.input(placeholder="Ingrese Email", on_change=UserState.buscar_on_change),
+        rx.button('Buscar usuario', on_click=UserState.get_user_by_email)
     )

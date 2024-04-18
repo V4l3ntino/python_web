@@ -1,1 +1,1 @@
-from .user_repository import select_all
+from .user_repository import select_all, select_user_by_email

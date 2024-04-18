@@ -8,3 +8,11 @@ def select_all():
     with Session(engine) as session:
         query = select(User)
         return session.exec(query).all()
+    
+
+def select_user_by_email(email: str):
+    engine = connect()
+    with Session(engine) as session:
+        query = select(User).where(User.username == email) 
+        return session.exec(query).all()
+    
