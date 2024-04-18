@@ -8,4 +8,3 @@ def select_all():
     with Session(engine) as session:
         query = select(User)
         return session.exec(query).all()
-    
