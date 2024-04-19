@@ -12,6 +12,15 @@ def select_user_by_email_service(email: str):
     else:
         return select_all()
     
+
+# def check_user_login(email: str):
+#     if(len(email) != 0):
+#         return select_user_by_email(email)
+#     else:
+#         return select_all()
+#     pass
+
+
 def  create_user_service(username: str, password: str, phone: str, name: str):
     user = select_user_by_email(username)
     if(len(user) == 0):
@@ -23,3 +32,4 @@ def  create_user_service(username: str, password: str, phone: str, name: str):
     
 def delete_user_service(email: str):
     return delete_user(email=email)
+
