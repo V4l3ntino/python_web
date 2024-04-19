@@ -1,4 +1,4 @@
-from ..repository.user_repository import select_all, select_user_by_email, create_user
+from ..repository.user_repository import select_all, select_user_by_email, create_user, delete_user
 from ..model.user_model import User
 
 def select_all_user_service():
@@ -20,3 +20,6 @@ def  create_user_service(username: str, password: str, phone: str, name: str):
     else:
         print('El usuario ya existe')
         raise BaseException('El usuario ya existe')
+    
+def delete_user_service(email: str):
+    return delete_user(email=email)
