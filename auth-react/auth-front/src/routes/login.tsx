@@ -3,7 +3,7 @@ import DefaultLayout from "../layout/DefaultLayout";
 import { useAuth } from "../auth/authProvider";
 import { Navigate, useNavigate } from "react-router-dom";
 import { API_URL } from "../auth/constants";
-import { AuthResponseError } from "../types/types";
+import { AuthResponse, AuthResponseError } from "../types/types";
 export default function Login(){
 
     const [username, setUsername] = useState(""); 
@@ -30,8 +30,14 @@ export default function Login(){
             if(response.ok){
                 console.log("Login successful")
                 setErrorResponse("");
+                const json = (await response.json()) as AuthResponse;
+                
+                if(json.body.accessToken && json.body.refreshToken){
+                    auth.saveUser(json);
+                    goTo("/dashboard");
+                }
 
-                goTo("/");
+
             } else {
                 console.log("Something went wrong")
                 const json = (await response.json()) as AuthResponseError;

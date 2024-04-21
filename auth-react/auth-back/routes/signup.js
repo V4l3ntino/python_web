@@ -46,7 +46,7 @@ router.post("/", async (req, res) => {
         .status(200)
         .json(jsonResponse(200, {message: "User created succesfully"}))
 
-        res.send("signout");
+        //res.send("signout");
         
     } catch (error) {
         res.status(500).json(
